@@ -1,10 +1,20 @@
 import cv2
 
-cap = cv2.VideoCapture(0) # Подключаем вебку(0 - это первая вебка 1 - это вторая вебка) если вебки нет вместо 0 пишим адресс видео как в с img
+face_cascades = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml") # подключаем нейросеть работающая с лицами
+img = cv2.imread("faces.jpg")
+img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) #Меняем цветную картинку на черно-белую
+faces = face_cascades.detectMultiScale(img_gray)
 
-while True:
-    success, frame = cap.read() # получаем картинку
-    cv2.imshow('Camera', frame )
+for ( x, y, w, h) in faces:     # перебираем координаты для нахождения лиц и и отрисовки рамок
+    cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
 
-    if cv2.waitKey(1) & 0xff == ord('q'):
-        break
+cv2.imshow('Result', img) # # Выводим саму картинку( 'Result' -это названия открывающегося окна,img - это наша картинка
+cv2.waitKey(0)
+# cap = cv2.VideoCapture(0) # Подключаем вебку(0 - это первая вебка 1 - это вторая вебка) если вебки нет вместо 0 пишим адресс видео как в с img
+#
+# while True:
+#     success, frame = cap.read() # получаем картинку
+#     cv2.imshow('Camera', frame )
+#
+#     if cv2.waitKey(1) & 0xff == ord('q'):
+#         break
